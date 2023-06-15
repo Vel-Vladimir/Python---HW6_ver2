@@ -1,7 +1,7 @@
 import shutil, sys
 from pathlib import Path
 
-DIR_SORT = Path(sys.argv[1])
+DIR_SORT = Path("d:\Мусор") #  Path(sys.argv[1])
 DIR_DICT = {"images": ('JPEG', 'PNG', 'JPG', 'SVG'),
              "video": ('AVI', 'MP4', 'MOV', 'MKV'),
              "documents": ('DOC', 'DOCX', 'TXT', 'PDF', 'XLSX', 'PPTX'),
@@ -47,6 +47,7 @@ def sorting(folder):
 
 
 def normalize(string):
+
     string = string.translate(TRANS)
     for letter in string:
         if not(letter.isalnum()) and letter not in ":\\/":
@@ -54,21 +55,27 @@ def normalize(string):
     return string
 
 
-def rename(folder):
+def rename_folder(folder):
     for f in folder.iterdir():
         if f.is_dir():
-            new_f = Path(normalize(str(f)))
-            f = f.rename(new_f)
-            rename(f)
+            folder_ = str(f)[len(str(DIR_SORT))+1:]
+            new_f = Path(DIR_SORT, normalize(str(folder_)))
+            if f != new_f:
+                f = f.rename(new_f)
+            rename_folder(f)
         elif f.is_file():
             new_f = Path(f.parent, normalize(str(f.stem)) + f.suffix)
-            f.rename(new_f)
+            if f != new_f:
+                f.rename(new_f)
 
 
-if __name__ == "__main__":
-    rename(DIR_SORT)
+def main():
+    rename_folder(DIR_SORT)
     make_dir(DIR_SORT, DIR_DICT.keys())
     sorting(DIR_SORT)
     unzipping(Path(DIR_SORT, "archives"))
     delete_empty_folders(DIR_SORT)
 
+
+if __name__ == "__main__":
+    main()
