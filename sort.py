@@ -1,7 +1,7 @@
 import shutil, sys
 from pathlib import Path
 
-DIR_SORT = Path("d:\Мусор") #  Path(sys.argv[1])
+DIR_SORT = Path(sys.argv[1])
 DIR_DICT = {"images": ('JPEG', 'PNG', 'JPG', 'SVG'),
              "video": ('AVI', 'MP4', 'MOV', 'MKV'),
              "documents": ('DOC', 'DOCX', 'TXT', 'PDF', 'XLSX', 'PPTX'),
